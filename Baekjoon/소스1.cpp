@@ -2,8 +2,10 @@
 
 int main(void)
 {
-	std::cout << "\\    /\\" << std::endl;
-	std::cout << " )  ( ')" << std::endl;
-	std::cout << "(  /  )" << std::endl;
-	std::cout << " \\(__)|";
+	int a, b;
+	std::cin >> a >> b;
+	std::cout << a * (b % 10) << std::endl;
+	std::cout << a * ((b % 100) / 10) << std::endl;
+	std::cout << a * (b / 100) << std::endl;
+	std::cout << a * b;
 }

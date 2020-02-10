@@ -2,10 +2,13 @@
 
 int main(void)
 {
-	int a, b;
-	std::cin >> a >> b;
-	std::cout << a * (b % 10) << std::endl;
-	std::cout << a * ((b % 100) / 10) << std::endl;
-	std::cout << a * (b / 100) << std::endl;
-	std::cout << a * b;
+	int a;
+	std::cin >> a;
+
+	int b, c;
+	for (int i = 0; i < a; i++)
+	{
+		std::cin >> b >> c;
+		std::cout << b + c << std::endl;
+	}
 }

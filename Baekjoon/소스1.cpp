@@ -1,26 +1,37 @@
 #include <iostream>
 
+bool han(int num);
+
 int main(void)
 {
-	int num, num2;
-	int first, end;
-	int count = 1;
+	int n;
+	std::cin >> n;
 
-	std::cin >> num;
-
-	first = num / 10;
-	end = num % 10;
-
-	num2 = end * 10 + (first + end) % 10;
-
-	while (num != num2)
+	int count = 0;
+	for (int i = 1; i <= n; i++)
 	{
-		first = num2 / 10;
-		end = num2 % 10;
-
-		num2 = end * 10 + (first + end) % 10;
-		count++;
+		if (han(i))
+			count++;
 	}
 
-	std::cout << count << "\n";
+	std::cout << count;
+}
+
+bool han(int num)
+{
+	int first = num / 1000;
+	int second = (num / 100) % 10;
+	int third = (num / 10) % 10;
+	int final = num % 10;
+
+	if (first == 0)
+		if (second == 0) //1~2자리 숫자의 경우
+			return true;
+		else
+			if (second - third == third - final)
+				return true;
+			else
+				return false;
+	else
+		return false;
 }

@@ -1,37 +1,20 @@
 #include <iostream>
-
-bool han(int num);
+#include <string> //getline을 쓰기 위함
 
 int main(void)
 {
-	int n;
-	std::cin >> n;
+	std::string sentence;
+	std::getline(std::cin, sentence);
 
-	int count = 0;
-	for (int i = 1; i <= n; i++)
+	int voca = 0;
+	for (int i = 1; i < sentence.size(); i++)
 	{
-		if (han(i))
-			count++;
+		if (sentence[i - 1] != ' ' && sentence[i] == ' ')
+			voca++;
 	}
 
-	std::cout << count;
-}
-
-bool han(int num)
-{
-	int first = num / 1000;
-	int second = (num / 100) % 10;
-	int third = (num / 10) % 10;
-	int final = num % 10;
-
-	if (first == 0)
-		if (second == 0) //1~2자리 숫자의 경우
-			return true;
-		else
-			if (second - third == third - final)
-				return true;
-			else
-				return false;
+	if (sentence.back() == ' ')
+		std::cout << voca;
 	else
-		return false;
+		std::cout << voca + 1;
 }

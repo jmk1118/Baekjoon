@@ -1,20 +1,35 @@
 #include <iostream>
-#include <string> //getline을 쓰기 위함
 
 int main(void)
 {
-	std::string sentence;
-	std::getline(std::cin, sentence);
-
-	int voca = 0;
-	for (int i = 1; i < sentence.size(); i++)
+	int n;
+	std::string input;
+	bool alpha[36] = { 0, };
+	
+	std::cin >> n;
+	int count = n;
+	for (int i = 0; i < n; i++)
 	{
-		if (sentence[i - 1] != ' ' && sentence[i] == ' ')
-			voca++;
+		for (int o = 0; o < 36; o++)
+		{
+			alpha[o] = false;
+		}
+
+		std::cin >> input;
+		alpha[input[0] - 'a'] = true;
+		for (int o = 1; o < input.size(); o++)
+		{
+			if (input[o - 1] == input[o])
+				continue;
+			else if (alpha[input[o] - 'a'] == true)
+			{
+				count--;
+				break;
+			}
+
+			alpha[input[o] - 'a'] = true;
+		}
 	}
 
-	if (sentence.back() == ' ')
-		std::cout << voca;
-	else
-		std::cout << voca + 1;
+	std::cout << count;
 }

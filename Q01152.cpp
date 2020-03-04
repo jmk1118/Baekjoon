@@ -1,5 +1,5 @@
 #include <iostream>
-#include <string> //getlineÀ» ¾²±â À§ÇÔ
+#include <string> //getlineÃ€Â» Â¾Â²Â±Ã¢ Ã€Â§Ã‡Ã”
 
 int main(void)
 {
@@ -9,7 +9,7 @@ int main(void)
 	int voca = 0;
 	for (int i = 1; i < sentence.size(); i++)
 	{
-		if (sentence[i - 1] != ' ' && sentence[i] == ' ')
+		if (sentence[i] == ' ')
 			voca++;
 	}
 

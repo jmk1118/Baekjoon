@@ -1,35 +1,40 @@
 #include <iostream>
 
+int count(int leng);
+
 int main(void)
 {
-	int n;
-	std::string input;
-	bool alpha[36] = { 0, };
-	
-	std::cin >> n;
-	int count = n;
-	for (int i = 0; i < n; i++)
+	int t;
+	std::cin >> t;
+
+	int x, y;
+	for (int i = 0; i < t; i++)
 	{
-		for (int o = 0; o < 36; o++)
-		{
-			alpha[o] = false;
-		}
+		std::cin >> x >> y;
 
-		std::cin >> input;
-		alpha[input[0] - 'a'] = true;
-		for (int o = 1; o < input.size(); o++)
-		{
-			if (input[o - 1] == input[o])
-				continue;
-			else if (alpha[input[o] - 'a'] == true)
-			{
-				count--;
-				break;
-			}
+		std::cout << count(y - x) << "\n";
+	}
+}
 
-			alpha[input[o] - 'a'] = true;
-		}
+int count(int leng)
+{
+	int i = 1;
+	unsigned int check = 0;
+
+	while (check * 2 <= leng)
+	{
+		check += i;
+		i++;
 	}
 
-	std::cout << count;
+	i--;
+	check -= i;
+
+
+	if (check * 2 == leng)
+		return (i - 1) * 2;
+	else if (check * 2 + i >= leng)
+		return (i - 1) * 2 + 1;
+	else
+		return (i - 1) * 2 + 2;
 }

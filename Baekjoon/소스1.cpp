@@ -1,40 +1,32 @@
 #include <iostream>
-
-int count(int leng);
+#include <cmath>
 
 int main(void)
 {
 	int t;
 	std::cin >> t;
 
-	int x, y;
+	int x1, y1, r1, x2, y2, r2;
+	double dist;
 	for (int i = 0; i < t; i++)
 	{
-		std::cin >> x >> y;
+		std::cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2;
 
-		std::cout << count(y - x) << "\n";
+		if (x1 == x2 && y1 == y2)
+		{
+			if (r1 == r2)
+				std::cout << -1 << "\n";
+			else
+				std::cout << 0 << "\n";
+			continue;
+		}
+
+		dist = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
+		if (r1 + r2 < dist || dist + r1 < r2 || dist + r2 < r1)
+			std::cout << 0 << "\n";
+		else if (r1 + r2 == dist || dist + r1 == r2 || dist + r2 == r1)
+			std::cout << 1 << "\n";
+		else
+			std::cout << 2 << "\n";
 	}
-}
-
-int count(int leng)
-{
-	int i = 1;
-	unsigned int check = 0;
-
-	while (check * 2 <= leng)
-	{
-		check += i;
-		i++;
-	}
-
-	i--;
-	check -= i;
-
-
-	if (check * 2 == leng)
-		return (i - 1) * 2;
-	else if (check * 2 + i >= leng)
-		return (i - 1) * 2 + 1;
-	else
-		return (i - 1) * 2 + 2;
 }

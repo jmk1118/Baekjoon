@@ -1,4 +1,2 @@
 ﻿  소스1.cpp
-D:\University\Baekjoon\Baekjoon\소스1.cpp(24,19): warning C4018: '<=': signed 또는 unsigned가 일치하지 않습니다.
-D:\University\Baekjoon\Baekjoon\소스1.cpp(36,25): warning C4018: '>=': signed 또는 unsigned가 일치하지 않습니다.
   Baekjoon.vcxproj -> D:\University\Baekjoon\x64\Debug\Baekjoon.exe

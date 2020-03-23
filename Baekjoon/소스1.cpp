@@ -1,32 +1,32 @@
 #include <iostream>
-#include <cmath>
+#include <vector>
+
+std::vector<std::pair<int, int>> hanoi;
+void moveTop(int n, int start, int fin, int mid);
 
 int main(void)
 {
-	int t;
-	std::cin >> t;
+	int n;
+	std::cin >> n;
 
-	int x1, y1, r1, x2, y2, r2;
-	double dist;
-	for (int i = 0; i < t; i++)
+	moveTop(n, 1, 3, 2);
+
+	std::cout << hanoi.size() << "\n";
+	for (int i = 0; i < hanoi.size(); i++)
 	{
-		std::cin >> x1 >> y1 >> r1 >> x2 >> y2 >> r2;
-
-		if (x1 == x2 && y1 == y2)
-		{
-			if (r1 == r2)
-				std::cout << -1 << "\n";
-			else
-				std::cout << 0 << "\n";
-			continue;
-		}
-
-		dist = sqrt(pow(x1 - x2, 2) + pow(y1 - y2, 2));
-		if (r1 + r2 < dist || dist + r1 < r2 || dist + r2 < r1)
-			std::cout << 0 << "\n";
-		else if (r1 + r2 == dist || dist + r1 == r2 || dist + r2 == r1)
-			std::cout << 1 << "\n";
-		else
-			std::cout << 2 << "\n";
+		std::cout << hanoi.at(i).first << " " << hanoi.at(i).second << "\n";
 	}
+}
+
+void moveTop(int n, int start, int fin, int mid)
+{
+	if (n == 1)
+	{
+		hanoi.push_back(std::pair<int, int>(start, fin));
+		return;
+	}
+
+	moveTop(n - 1, start, mid, fin);
+	hanoi.push_back(std::pair<int, int>(start, fin));
+	moveTop(n - 1, mid, fin, start);
 }

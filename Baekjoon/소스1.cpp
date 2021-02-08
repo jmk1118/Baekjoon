@@ -1,31 +1,23 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
-
-bool compare(std::pair<int, std::string> a, std::pair<int, std::string> b);
 
 int main(void)
 {
 	int n;
-	std::cin >> n;
+	int number[100000];
 
-	std::vector<std::pair<int, std::string>> person;
-	int year;
-	std::string name;
+	std::cin >> n;
+	for (int i = 0; i < n; i++)
+		std::cin >> number[i];
+
+	int answer = -1001;
+	int nowmax = -1001;
+
 	for (int i = 0; i < n; i++)
 	{
-		std::cin >> year >> name;
-		person.push_back(std::pair<int, std::string>(year, name));
+		nowmax = std::max(nowmax + number[i], number[i]);
+		answer = std::max(answer, nowmax);
 	}
-	std::stable_sort(person.begin(), person.end(), compare);
-	for (int i = 0; i < n; i++)
-		std::cout << person.at(i).first << " " << person.at(i).second << "\n";
-}
 
-bool compare(std::pair<int, std::string> a, std::pair<int, std::string> b)
-{
-	if (a.first != b.first)
-		return a.first < b.first;
-	else
-		return false;
+	std::cout << answer;
 }

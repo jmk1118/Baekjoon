@@ -1,31 +1,51 @@
 #include <iostream>
+#include <string>
 
 int main(void)
 {
-	int n, k;
-	std::cin >> n >> k;
+	int stack[10000] = { 0, };
+	int n;
+	std::cin >> n;
 
-	int coin[10];
+	std::string order;
+	int num;
+	int count = -1;
 	for (int i = 0; i < n; i++)
-		std::cin >> coin[i];
-
-	int sum = 0;
-	int count = 0;
-	for (int i = n - 1; i >= 0; i--)
 	{
-		if (coin[i] <= k)
+		std::cin >> order;
+		if (order.compare("push") == 0)
 		{
-			while (sum <= k)
+			std::cin >> num;
+			count = count + 1;
+			stack[count] = num;
+		}
+		else if (order.compare("pop") == 0)
+		{
+			if (count == -1)
 			{
-				sum = sum + coin[i];
-				count = count + 1;
+				std::cout << -1 << "\n";
+				continue;
 			}
-			sum = sum - coin[i];
+			std::cout << stack[count] << "\n";
 			count = count - 1;
 		}
-		if (sum == k)
-			break;
+		else if (order.compare("top") == 0)
+		{
+			if (count == -1)
+			{
+				std::cout << -1 << "\n";
+				continue;
+			}
+			std::cout << stack[count] << "\n";
+		}
+		else if (order.compare("size") == 0)
+			std::cout << count + 1 << "\n";
+		else if (order.compare("empty") == 0)
+		{
+			if (count == -1)
+				std::cout << 1 << "\n";
+			else
+				std::cout << 0 << "\n";
+		}
 	}
-	
-	std::cout << count;
 }

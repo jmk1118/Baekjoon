@@ -1,23 +1,31 @@
 #include <iostream>
-#include <algorithm>
 
 int main(void)
 {
-	int n;
-	int number[100000];
+	int n, k;
+	std::cin >> n >> k;
 
-	std::cin >> n;
+	int coin[10];
 	for (int i = 0; i < n; i++)
-		std::cin >> number[i];
+		std::cin >> coin[i];
 
-	int answer = -1001;
-	int nowmax = -1001;
-
-	for (int i = 0; i < n; i++)
+	int sum = 0;
+	int count = 0;
+	for (int i = n - 1; i >= 0; i--)
 	{
-		nowmax = std::max(nowmax + number[i], number[i]);
-		answer = std::max(answer, nowmax);
+		if (coin[i] <= k)
+		{
+			while (sum <= k)
+			{
+				sum = sum + coin[i];
+				count = count + 1;
+			}
+			sum = sum - coin[i];
+			count = count - 1;
+		}
+		if (sum == k)
+			break;
 	}
-
-	std::cout << answer;
+	
+	std::cout << count;
 }

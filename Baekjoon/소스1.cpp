@@ -1,37 +1,51 @@
 #include <iostream>
-#include <deque>
+
+void bundle(int startX, int startY, int size);
+char image[64][64];
 
 int main(void)
 {
-	int n, m;
-	std::cin >> n >> m;
+	int n;
+	std::cin >> n;
 
-	std::deque<int> queue;
 	for (int i = 0; i < n; i++)
-		queue.push_back(i + 1);
+		for (int o = 0; o < n; o++)
+			std::cin >> image[i][o];
 
-	int tem, count, check;
-	int answer = 0;
-	for (int i = 0; i < m; i++)
+	bundle(0, 0, n);
+}
+
+void bundle(int startX, int startY, int size)
+{
+	char start = image[startX][startY];
+	if (size == 1)
 	{
-		std::cin >> check;
-		count = 0;
-
-		while (queue.front() != check)
-		{
-			tem = queue.front();
-			queue.pop_front();
-			queue.push_back(tem);
-			count++;
-		}
-
-		if (count <= queue.size() / 2)
-			answer += count;
-		else
-			answer += (queue.size() - count);
-
-		queue.pop_front();
+		std::cout << start;
+		return;
 	}
 
-	std::cout << answer << std::endl;
+	bool check = false;
+	for (int i = 0; i < size; i++)
+	{
+		for (int o = 0; o < size; o++)
+			if (start != image[startX + i][startY + o])
+			{
+				check = true;
+				break;
+			}
+		if (check)
+			break;
+	}
+
+	if (check)
+	{
+		std::cout << "(";
+		bundle(startX, startY, size / 2);
+		bundle(startX, startY + size / 2, size / 2);
+		bundle(startX + size / 2, startY, size / 2);
+		bundle(startX + size / 2, startY + size / 2, size / 2);
+		std::cout << ")";
+	}
+	else
+		std::cout << start;
 }

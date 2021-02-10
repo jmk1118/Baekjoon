@@ -1,7 +1,8 @@
 #include <iostream>
 
 void bundle(int startX, int startY, int size);
-char image[64][64];
+int paper[2187][2187];
+int answer[3];
 
 int main(void)
 {
@@ -10,17 +11,23 @@ int main(void)
 
 	for (int i = 0; i < n; i++)
 		for (int o = 0; o < n; o++)
-			std::cin >> image[i][o];
+			std::cin >> paper[i][o];
+
+	answer[0] = 0;
+	answer[1] = 0;
+	answer[2] = 0;
 
 	bundle(0, 0, n);
+
+	std::cout << answer[0] << std::endl << answer[1] << std::endl << answer[2];
 }
 
 void bundle(int startX, int startY, int size)
 {
-	char start = image[startX][startY];
+	int start = paper[startX][startY];
 	if (size == 1)
 	{
-		std::cout << start;
+		answer[start + 1] += 1;
 		return;
 	}
 
@@ -28,7 +35,7 @@ void bundle(int startX, int startY, int size)
 	for (int i = 0; i < size; i++)
 	{
 		for (int o = 0; o < size; o++)
-			if (start != image[startX + i][startY + o])
+			if (start != paper[startX + i][startY + o])
 			{
 				check = true;
 				break;
@@ -39,13 +46,16 @@ void bundle(int startX, int startY, int size)
 
 	if (check)
 	{
-		std::cout << "(";
-		bundle(startX, startY, size / 2);
-		bundle(startX, startY + size / 2, size / 2);
-		bundle(startX + size / 2, startY, size / 2);
-		bundle(startX + size / 2, startY + size / 2, size / 2);
-		std::cout << ")";
+		bundle(startX, startY, size / 3);
+		bundle(startX, startY + size / 3, size / 3);
+		bundle(startX, startY + 2 * (size / 3), size / 3);
+		bundle(startX + size / 3, startY, size / 3);
+		bundle(startX + size / 3, startY + size / 3, size / 3);
+		bundle(startX + size / 3, startY + 2 * (size / 3), size / 3);
+		bundle(startX + 2 * (size / 3), startY, size / 3);
+		bundle(startX + 2 * (size / 3), startY + size / 3, size / 3);
+		bundle(startX + 2 * (size / 3), startY + 2 * (size / 3), size / 3);
 	}
 	else
-		std::cout << start;
+		answer[start + 1] += 1;
 }

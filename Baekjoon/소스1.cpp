@@ -1,61 +1,44 @@
+#pragma warning(disable: 4996)
 #include <iostream>
-
-void bundle(int startX, int startY, int size);
-int paper[2187][2187];
-int answer[3];
+#include <algorithm>
 
 int main(void)
 {
 	int n;
-	std::cin >> n;
-
+	scanf("%d", &n);
+	int Nnumber[100000];
 	for (int i = 0; i < n; i++)
-		for (int o = 0; o < n; o++)
-			std::cin >> paper[i][o];
+		scanf("%d", &Nnumber[i]);
+	std::sort(Nnumber, Nnumber + n);
 
-	answer[0] = 0;
-	answer[1] = 0;
-	answer[2] = 0;
+	int m;
+	scanf("%d", &m);
+	int Mnumber[100000];
+	for (int i = 0; i < m; i++)
+		scanf("%d", &Mnumber[i]);
 
-	bundle(0, 0, n);
-
-	std::cout << answer[0] << std::endl << answer[1] << std::endl << answer[2];
-}
-
-void bundle(int startX, int startY, int size)
-{
-	int start = paper[startX][startY];
-	if (size == 1)
+	int check, startcheck, lastcheck;
+	for (int i = 0; i < m; i++)
 	{
-		answer[start + 1] += 1;
-		return;
-	}
-
-	bool check = false;
-	for (int i = 0; i < size; i++)
-	{
-		for (int o = 0; o < size; o++)
-			if (start != paper[startX + i][startY + o])
+		startcheck = 0;
+		lastcheck = n - 1;
+		check = (startcheck + lastcheck) / 2;
+		while (Nnumber[check] != Mnumber[i] && startcheck < lastcheck)
+		{
+			if (Nnumber[check] < Mnumber[i])
 			{
-				check = true;
-				break;
+				startcheck = check + 1;
+				check = (startcheck + lastcheck) / 2;
 			}
-		if (check)
-			break;
+			else
+			{
+				lastcheck = check - 1;
+				check = (startcheck + lastcheck) / 2;
+			}
+		}
+		if (Nnumber[check] == Mnumber[i])
+			printf("1\n");
+		else
+			printf("0\n");
 	}
-
-	if (check)
-	{
-		bundle(startX, startY, size / 3);
-		bundle(startX, startY + size / 3, size / 3);
-		bundle(startX, startY + 2 * (size / 3), size / 3);
-		bundle(startX + size / 3, startY, size / 3);
-		bundle(startX + size / 3, startY + size / 3, size / 3);
-		bundle(startX + size / 3, startY + 2 * (size / 3), size / 3);
-		bundle(startX + 2 * (size / 3), startY, size / 3);
-		bundle(startX + 2 * (size / 3), startY + size / 3, size / 3);
-		bundle(startX + 2 * (size / 3), startY + 2 * (size / 3), size / 3);
-	}
-	else
-		answer[start + 1] += 1;
 }

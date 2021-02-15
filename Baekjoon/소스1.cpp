@@ -1,44 +1,26 @@
 #pragma warning(disable: 4996)
 #include <iostream>
-#include <algorithm>
+#include <queue>
 
 int main(void)
 {
+	std::priority_queue<int> pq;
+
 	int n;
 	scanf("%d", &n);
-	int Nnumber[100000];
+
+	int input;
 	for (int i = 0; i < n; i++)
-		scanf("%d", &Nnumber[i]);
-	std::sort(Nnumber, Nnumber + n);
-
-	int m;
-	scanf("%d", &m);
-	int Mnumber[100000];
-	for (int i = 0; i < m; i++)
-		scanf("%d", &Mnumber[i]);
-
-	int check, startcheck, lastcheck;
-	for (int i = 0; i < m; i++)
 	{
-		startcheck = 0;
-		lastcheck = n - 1;
-		check = (startcheck + lastcheck) / 2;
-		while (Nnumber[check] != Mnumber[i] && startcheck < lastcheck)
-		{
-			if (Nnumber[check] < Mnumber[i])
-			{
-				startcheck = check + 1;
-				check = (startcheck + lastcheck) / 2;
-			}
-			else
-			{
-				lastcheck = check - 1;
-				check = (startcheck + lastcheck) / 2;
-			}
-		}
-		if (Nnumber[check] == Mnumber[i])
-			printf("1\n");
-		else
+		scanf("%d", &input);
+		if (input == 0 && pq.size() == 0)
 			printf("0\n");
+		else if (input == 0)
+		{
+			printf("%d\n", pq.top());
+			pq.pop();
+		}
+		else
+			pq.push(input);
 	}
 }

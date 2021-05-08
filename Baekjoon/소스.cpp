@@ -1,36 +1,42 @@
 #include <iostream>
-#include <algorithm>
-#include <vector>
 
-std::vector<int> coordinate; //좌표
-std::vector<int> order; //순서
+int n, m;
+int answer[9];
+
+void backTracking(int nowlength, int value);
 
 int main(void) 
 {
-	int n; //입력받을 좌표의 수
-	int enter; //입력값
+	std::cin >> n >> m;
 
-	//값 입력
-	std::cin >> n;
-	for (int i = 0; i < n; i++)
+	for (int i = 1; i <= n - m + 1; i++)
 	{
-		std::cin >> enter;
-		coordinate.push_back(enter);
-		order.push_back(enter);
+		answer[1] = i;
+		if (m == 1)
+		{
+			std::cout << answer[1] << std::endl;
+			continue;
+		}
+
+		for (int o = i + 1; o <= n; o++)
+			backTracking(2, o);
+	}
+}
+
+void backTracking(int nowlength, int value)
+{
+	answer[nowlength] = value;
+	if (nowlength >= m)
+	{
+		for (int i = 1; i <= m; i++)
+			std::cout << answer[i] << " ";
+		std::cout << std::endl;
+
+		return;
 	}
 
-	//order 벡터에서 중복을 제거하고 정렬한다.
-	std::sort(order.begin(), order.end());
-	order.erase(std::unique(order.begin(), order.end()), order.end());
-
-	//정답 출력
-	//coordinate배열의 각 값들을 i에 할당한다.
-	//lower_bound 함수를 사용해 i가 order 배열의 몇 번째에 존재하는지 탐색한다.
-	//탐색한 위치를 출력한다.
-	int answer;
-	for (int i : coordinate) 
+	for (int i = value + 1; i <= n; i++)
 	{
-		answer = std::lower_bound(order.begin(), order.end(), i) - order.begin();
-		std::cout << answer << " ";
+		backTracking(nowlength + 1, i);
 	}
 }

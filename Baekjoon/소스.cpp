@@ -20,7 +20,7 @@ int main(void)
 			continue;
 		}
 
-		for (int o = 1; o <= n; o++) // 같은 수를 여러번 골라도 괜찮으므로 1부터 n까지 모든 숫자를 백트래킹한다.
+		for (int o = i; o <= n; o++) // 비내림차순이어야 하므로 i보타 같거나 큰 숫자만 백트래킹한다.
 			backTracking(2, o);
 	}
 }
@@ -43,7 +43,7 @@ void backTracking(int nowlength, int value)
 		return;
 	}
 
-	for (int i = 1; i <= n; i++) // 같은 수를 여러번 골라도 괜찮으므로 1부터 n까지 모든 숫자를 백트래킹한다.
+	for (int i = value; i <= n; i++) // 비내림차순이어야 하므로 i보타 같거나 큰 숫자만 백트래킹한다.
 	{
 		backTracking(nowlength + 1, i);
 	}

@@ -1,80 +1,90 @@
 #include <iostream>
-#include <vector>
+#include <algorithm>
 
-int sudoku[10][10]; // 스도쿠
-std::vector<std::pair<int, int>> location;// 0을 가진 좌표를 기록해놓는 배열
+#define PLUS 1
+#define MINUS 2
+#define MULTI 3
+#define DIV 4
 
-bool EraseSudokuEmpty(int locationNum); // 0을 가진 좌표에 임의의 값을 집어넣는 백트래킹 함수
+int N; // 수열 수
+int signNumber[5]; //1 : 덧셈, 2 : 뺄셈, 3 : 곱셈, 4 : 나눗셈
+int number[12]; // 입력받은 수열
+int sign[12]; // 백트래킹 함수에서 현재 부호들 상태를 저장할 배열, 덧셈 : 1, 뺄셈 : 2, 곱셈 : 3, 나눗셈 : 4
+int max, min; // 답으로 제출할 최댓값, 최솟값
+
+void EnterSign(int location); // 부호를 백트래킹하며 집어넣는 함수
+int Calculation(); // 부호를 모두 채워넣었을 때 계산해줄 함수
 
 int main(void)
 {
-	// 문제 입력
-	for (int i = 1; i < 10; i++)
-		for (int o = 1; o < 10; o++)
-		{
-			std::cin >> sudoku[i][o];
+	// 입력값 입력
+	std::cin >> N;
+	for (int i = 1; i <= N; i++)
+		std::cin >> number[i];
+	std::cin >> signNumber[1] >> signNumber[2] >> signNumber[3] >> signNumber[4];
 
-			// 0을 입력받으면 0을 가진 좌표 배열에 추가
-			if (sudoku[i][o] == 0)
-				location.push_back(std::make_pair(i, o));
-		}
-	
-	// 백트래킹을 사용하여 탐색
-	for (int i = 0; i < location.size(); i++)
-		if (EraseSudokuEmpty(i))
-			break;
+	max = -1000000001;
+	min = 1000000001;
 
-	// 답 출력
-	for (int i = 1; i < 10; i++)
+	// 첫 칸부터 백트래킹
+	sign[1] = PLUS; // 첫 숫자는 +나 마찬가지이므로 +로 초기화
+	EnterSign(2);
+
+	std::cout << max << std::endl;
+	std::cout << min << std::endl;
+}
+
+void EnterSign(int location) // 부호를 백트래킹하며 집어넣는 함수
+{
+	for (int i = 1; i <= 4; i++)
 	{
-		for (int o = 1; o < 10; o++)
-			printf("%d ", sudoku[i][o]);
-		printf("\n");
+		// 덧셈, 뺼셈, 곱셈, 나눗셈 순서로 집어넣어본다. 단, 해당 부호가 남아있지 않다면 패스한다.
+		if (signNumber[i] <= 0)
+			continue;
+
+		signNumber[i]--;
+		sign[location] = i;
+
+		// 모든 부호를 썻다면 계산하고 max와 min과 비교
+		if (location == N)
+		{
+			int calculationNumber = Calculation(); // 계산식을 계산한 값
+			max = std::max(max, calculationNumber);
+			min = std::min(min, calculationNumber);
+		}
+		// 쓰지 않은 부호가 남아있다면 다음 location으로 진행
+		else
+			EnterSign(location + 1);
+			
+		// 돌아왔다면 넣었던 부호를 빼고 다시 진행
+		signNumber[i]++;
+		sign[location] = 0;
+		
 	}
 }
 
-/// <summary>
-/// 0 좌표에 임의의 값을 집어넣고 백트래킹 하는 함수
-/// </summary>
-/// <param name="locationNum">0을 가진 좌표 배열의 몇번째 칸인지 알려주는 변수</param>
-bool EraseSudokuEmpty(int locationNum)
+int Calculation() // 부호를 모두 채워넣었을 때 계산해줄 함수
 {
-	// 1 ~ 9가 가로, 세로, 같은 칸에 있는지 확인하기 위해 불린 배열 선언
-	bool number[10];
-	for (int i = 0; i < 10; i++) // 배열 초기화
-		number[i] = false;
+	int answer = 0;
 
-	// 넣을 수 있는 후보 추리기
-	for (int i = 1; i < 10; i++)
+	for (int i = 1; i <= N; i++)
 	{
-		number[sudoku[i][location.at(locationNum).second]] = true; // 가로 확인
-		number[sudoku[location.at(locationNum).first][i]] = true; // 세로 확인
-	}
-	// 같은 칸 확인
-	for (int i = ((location.at(locationNum).first - 1) / 3) * 3 + 1; i <= ((location.at(locationNum).first - 1) / 3) * 3 + 3; i++)
-		for (int o = ((location.at(locationNum).second - 1) / 3) * 3 + 1; o <= ((location.at(locationNum).second - 1) / 3) * 3 + 3; o++)
-			number[sudoku[i][o]] = true;
-
-	// 넣을 수 있는 후보들을 각각 넣어보고 다음 0 좌표에 EraseSudokuEmpty 호출
-	for (int i = 1; i < 10; i++)
-	{
-		if (number[i]) // 가로, 세로, 같은 칸에 없는 숫자들만 백트래킹 실행
-			continue;
-		else 
+		switch (sign[i])
 		{
-			// 넣을 수 있는 숫자 중 하나를 입력
-			sudoku[location.at(locationNum).first][location.at(locationNum).second] = i;
-			// 더이상 0인 좌표가 없다면 정답이므로 백트래킹 탈출
-			if (locationNum == location.size() - 1)
-				return true;
-			// 0인 좌표가 남아있다면 다음 0인 좌표로 백트래킹 함수 호출
-			if (locationNum < location.size() - 1)
-				if (EraseSudokuEmpty(locationNum + 1)) // 백트래킹하여 정답이 나왔을 경우 백트래킹 탈출
-					return true;
-			// 백트래킹하여 정답이 나오지 않았을 경우 입력했던 숫자를 다시 0으로 변환
-			sudoku[location.at(locationNum).first][location.at(locationNum).second] = 0;
+			case 1:
+				answer += number[i];
+				break;
+			case 2:
+				answer -= number[i];
+				break;
+			case 3:
+				answer *= number[i];
+				break;
+			case 4:
+				answer /= number[i];
+				break;
 		}
 	}
 
-	return false; // 정답에 다다를 수 없었으므로 이전 좌표로 귀환
+	return answer;
 }

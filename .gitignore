@@ -31,6 +31,8 @@
 *.out
 *.app
 
+# vs 파일 무시
 .vs/
 Baekjoon/
 x64/
+/Baekjoon.sln

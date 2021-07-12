@@ -31,6 +31,6 @@
 *.out
 *.app
 
-/.vs
-/Baekjoon
-/x64
+.vs/
+Baekjoon/
+x64/
